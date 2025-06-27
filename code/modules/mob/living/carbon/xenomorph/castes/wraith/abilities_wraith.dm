@@ -1,3 +1,4 @@
+
 GLOBAL_LIST_INIT(wraith_banish_very_short_duration_list, typecacheof(list(
 	/obj/vehicle/sealed,
 	/obj/structure/barricade,
@@ -506,7 +507,7 @@ GLOBAL_LIST_INIT(wraith_banish_very_short_duration_list, typecacheof(list(
 	anchored = TRUE
 	opacity = FALSE
 	vis_flags = VIS_HIDE
-	resistance_flags = UNACIDABLE | CRUSHER_IMMUNE | BANISH_IMMUNE
+	resistance_flags = UNACIDABLE | CRUSHER_IMMUNE
 	/// Visual object for handling the viscontents
 	var/obj/effect/portal_effect/portal_visuals
 	/// The linked portal
@@ -670,6 +671,11 @@ GLOBAL_LIST_INIT(wraith_banish_very_short_duration_list, typecacheof(list(
 
 /datum/action/ability/activable/xeno/rewind/can_use_ability(atom/A, silent, override_flags)
 	. = ..()
+
+	if(A == owner)
+		if(!silent)
+			owner.balloon_alert(owner, "Cannot rewind self")
+		return FALSE
 
 	var/distance = get_dist(owner, A)
 	if(distance > range) //Needs to be in range.
